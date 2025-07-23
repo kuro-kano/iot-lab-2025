@@ -14,6 +14,9 @@ Reference: [https://github.com/n0uur/iot-lab-2025](https://github.com/n0uur/iot-
 
 ---
 
+### Deployed with vercel
+- https://week-1-rest-api-with-hono.vercel.app/api/
+
 ## Setup
 ```bash
 # clone this repository to local computer
