@@ -7,5 +7,5 @@ export const students = t.pgTable('students', {
     lastname: t.varchar({ length: 30 }).notNull(),
     student_id: t.varchar({ length: 10 }).notNull().unique(),
     birthday: t.varchar({ length: 50 }),
-    gender: t.varchar({ length: 10 }),
+    gender: t.varchar({ length: 10 }).notNull(),
 });
