@@ -1,5 +1,5 @@
 {
-  "name": "02-2-database-crud-drizzle",
+  "name": "Week-1-RestAPI-with-Hono",
   "type": "module",
   "scripts": {
     "dev": "tsx watch api/index.ts",
