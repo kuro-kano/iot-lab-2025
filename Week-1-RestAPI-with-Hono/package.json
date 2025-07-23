@@ -1,13 +1,15 @@
 {
-  "name": "091",
-  "version": "1.0.0",
-  "main": "index.js",
+  "name": "02-2-database-crud-drizzle",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "tsx watch api/index.ts",
+    "vercel:dev": "vercel dev",
+    "vercel:deploy": "vercel",
+    "drizzle": "drizzle-kit"
   },
   "dependencies": {
     "@hono/node-server": "^1.16.0",
-    "@hono/zod-validator": "^0.7.1",
+    "@hono/zod-validator": "^0.7.2",
     "@types/pg": "^8.15.4",
     "@vercel/postgres": "^0.10.0",
     "dayjs": "^1.11.13",
@@ -23,11 +25,5 @@
     "tsx": "^4.7.1",
     "typescript": "^5.8.3",
     "vercel": "^44.4.3"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": ""
+  }
 }
-
-
