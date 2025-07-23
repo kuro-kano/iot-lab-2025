@@ -4,8 +4,6 @@ import { students } from '../db/schema';
 import { eq } from 'drizzle-orm';
 import { success, z } from 'zod';
 import { zValidator } from '@hono/zod-validator';
-import dayjs from 'dayjs';
-
 const studentsRouter = new Hono();
 
 studentsRouter.get('/', async (c) => {
