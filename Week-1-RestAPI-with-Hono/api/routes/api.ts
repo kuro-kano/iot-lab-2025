@@ -1,4 +1,5 @@
 import { Hono } from 'hono';
+import studentsRouter from './students.js';
 import { bearerAuth } from 'hono/bearer-auth';
 import { env } from 'hono/adapter';
 
@@ -17,5 +18,7 @@ apiRouter.use(
     },
   })
 );
+
+apiRouter.route('/students', studentsRouter)
 
 export default apiRouter;
