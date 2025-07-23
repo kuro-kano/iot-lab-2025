@@ -44,13 +44,13 @@ Use [POSTMAN](https://www.postman.com/)
 ### Get all students
 ```http
 GET /api/students
-Authorization: Bearer eiei
+Authorization: Bearer your_api_secret
 ```
 
 ### Create student
 ```http
 POST /api/students
-Authorization: Bearer eiei
+Authorization: Bearer your_api_secret
 Content-Type: application/json
 
 {
@@ -65,11 +65,24 @@ Content-Type: application/json
 ### Update student
 ```http
 PATCH /api/students/:id
-Authorization: Bearer eiei
+Authorization: Bearer your_api_secret
 Content-Type: application/json
 
 {
     "firstname": "Jane"
+}
+```
+
+### Delete student
+```http
+DELETE /api/students/:id
+Authorization: Bearer your_api_secret
+Content-Type: application/json
+
+// Response example
+{
+    "success": true,
+    "message": "Student deleted successfully"
 }
 ```
 
