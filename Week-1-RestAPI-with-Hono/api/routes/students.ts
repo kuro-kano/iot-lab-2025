@@ -48,5 +48,22 @@ studentsRouter.post('/',
     }
 );
 
+studentsRouter.patch('/:id', zValidator("json", z.object({
+  firstname: z.string().max(30).optional(),
+  lastname: z.string().max(30).optional(),
+  student_id: z.string().max(10).optional(),
+  birthday: z.string().max(50).optional(),
+  gender: z.string().max(10).optional(),
+  })),
+  async (c) => {
+    const id = Number(c.req.param('id'));
+    const data = c.req.valid('json');
+    const updated = await drizzle.update(students).set(data).where(eq(students.id, id)).returning();
+    if (updated.length === 0) {
+      return c.json({ message: 'Student not found' }, 404);
+    }
+    return c.json({ success: true, student: updated[0] });
+  }
+);
 
 export default studentsRouter;
