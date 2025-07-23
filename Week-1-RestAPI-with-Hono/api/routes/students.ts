@@ -2,7 +2,7 @@ import { Hono } from 'hono';
 import drizzle from '../db/drizzle';
 import { students } from '../db/schema';
 import { eq } from 'drizzle-orm';
-import { z } from 'zod';
+import { success, z } from 'zod';
 import { zValidator } from '@hono/zod-validator';
 import dayjs from 'dayjs';
 
@@ -13,16 +13,39 @@ studentsRouter.get('/', async (c) => {
   return c.json(allStudents);
 });
 
-studentsRouter.get('/:student_id', async (c) => {
-  const student_id = c.req.param('student_id');
+studentsRouter.get('/:id', async (c) => {
+  const id = Number(c.req.param('id'));
   const result = await drizzle.query.students.findFirst({
-    where: eq(students.student_id, student_id),
+    where: eq(students.id, id),
   });
   if (!result) {
     return c.json({ message: 'Student not found' }, 404);
   }
-
-    return c.json(result);
+  return c.json(result);
 });
+
+studentsRouter.post('/', 
+  zValidator(
+    "json",
+    z.object({
+        firstname: z.string().min(1).max(30),
+        lastname: z.string().min(1).max(30),
+        student_id: z.string().min(1).max(10),
+        birthday: z.string().min(1).max(50).optional(),
+        gender: z.string().min(1).max(10),
+    })
+  ),
+    async (c) => {
+        const { firstname, lastname, student_id, birthday, gender } = c.req.valid('json');
+        const result = await drizzle.insert(students).values({
+            firstname,
+            lastname,
+            student_id,
+            birthday,
+            gender,
+        }).returning();
+        return c.json({ success: true, student: result[0] }, 201);
+    }
+);
 
 export default studentsRouter;
