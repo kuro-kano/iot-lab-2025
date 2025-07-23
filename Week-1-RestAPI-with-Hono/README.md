@@ -108,5 +108,5 @@ Content-Type: application/json
 ├── package.json
 ├── README.md
 ├── tsconfig.json
-├── vercel.json
+└── vercel.json
 ```
