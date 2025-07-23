@@ -66,4 +66,13 @@ studentsRouter.patch('/:id', zValidator("json", z.object({
   }
 );
 
+studentsRouter.delete('/:id', async (c) => {
+  const id = Number(c.req.param('id'));
+  const deleted = await drizzle.delete(students).where(eq(students.id, id)).returning();
+  if (deleted.length === 0) {
+    return c.json({ message: 'Student not found' }, 404);
+  }
+  return c.json({ success: true, message: 'Student deleted successfully', students: deleted[0] });
+});
+
 export default studentsRouter;
