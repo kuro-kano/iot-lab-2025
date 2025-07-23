@@ -39,7 +39,9 @@ npm run drizzle push
 
 ## API Endpoints
 
-Use [POSTMAN](https://www.postman.com/)
+### Setup Postman
+- Download and install [Postman](https://www.postman.com/)
+- Create a new request in Postman
 
 ### Get all students
 ```http
@@ -79,7 +81,6 @@ DELETE /api/students/:id
 Authorization: Bearer your_api_secret
 Content-Type: application/json
 
-// Response example
 {
     "success": true,
     "message": "Student deleted successfully"
