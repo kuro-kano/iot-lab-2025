@@ -70,38 +70,53 @@ export default function BookCreatePage() {
   return (
     <>
       <Layout>
-        <Container className="mt-8">
-          <h1 className="text-xl">เพิ่มหนังสือในระบบ</h1>
+        <Container className="mt-8 mb-16">
+          <div className="bg-white rounded-lg shadow-lg p-8">
+            <h1 className="text-3xl font-bold text-orange-800 mb-8">
+              เพิ่มหนังสือในระบบ
+            </h1>
 
-          <form onSubmit={bookCreateForm.onSubmit(handleSubmit)} className="space-y-8">
-            <TextInput
-              label="ชื่อหนังสือ"
-              placeholder="ชื่อหนังสือ"
-              {...bookCreateForm.getInputProps("title")}
-            />
+            <form
+              onSubmit={bookCreateForm.onSubmit(handleSubmit)}
+              className="space-y-8"
+            >
+              <TextInput
+                label="ชื่อหนังสือ"
+                placeholder="ชื่อหนังสือ"
+                className="transition-all duration-300 focus-within:shadow-md"
+                {...bookCreateForm.getInputProps("title")}
+              />
 
-            <TextInput
-              label="ชื่อผู้แต่ง"
-              placeholder="ชื่อผู้แต่ง"
-              {...bookCreateForm.getInputProps("author")}
-            />
+              <TextInput
+                label="ชื่อผู้แต่ง"
+                placeholder="ชื่อผู้แต่ง"
+                className="transition-all duration-300 focus-within:shadow-md"
+                {...bookCreateForm.getInputProps("author")}
+              />
 
-            <DateTimePicker
-              label="วันที่พิมพ์"
-              placeholder="วันที่พิมพ์"
-              {...bookCreateForm.getInputProps("publishedAt")}
-            />
+              <DateTimePicker
+                label="วันที่พิมพ์"
+                placeholder="วันที่พิมพ์"
+                {...bookCreateForm.getInputProps("publishedAt")}
+              />
 
-            {/* TODO: เพิ่มรายละเอียดหนังสือ */}
-            {/* TODO: เพิ่มเรื่องย่อ */}
-            {/* TODO: เพิ่มหมวดหมู่(s) */}
+              {/* TODO: เพิ่มรายละเอียดหนังสือ */}
+              {/* TODO: เพิ่มเรื่องย่อ */}
+              {/* TODO: เพิ่มหมวดหมู่(s) */}
 
-            <Divider />
+              <Divider className="my-8" />
 
-            <Button type="submit" loading={isProcessing}>
-              บันทึกข้อมูล
-            </Button>
-          </form>
+              <div className="flex justify-between">
+                <Button
+                  type="submit"
+                  loading={isProcessing}
+                  className="bg-orange-600 hover:bg-orange-700 transition-colors"
+                >
+                  บันทึกข้อมูล
+                </Button>
+              </div>
+            </form>
+          </div>
         </Container>
       </Layout>
     </>

@@ -12,76 +12,71 @@ export default function BookByIdPage() {
   const { data: book, isLoading, error } = useSWR<Book>(`/books/${bookId}`);
 
   return (
-    <>
-      <Layout>
-        <Container className="mt-4">
-          {/* You can use isLoading instead of !book */}
-          {isLoading && !error && <Loading />}
-          {error && (
-            <Alert
-              color="red"
-              title="เกิดข้อผิดพลาดในการอ่านข้อมูล"
-              icon={<IconAlertTriangleFilled />}
-            >
-              {error.message}
-            </Alert>
-          )}
+    <Layout>
+      <Container className="mt-8 mb-16">
+        {isLoading && !error && <Loading />}
+        {error && (
+          <Alert
+            color="red"
+            title="เกิดข้อผิดพลาดในการอ่านข้อมูล"
+            icon={<IconAlertTriangleFilled />}
+          >
+            {error.message}
+          </Alert>
+        )}
 
-          {!!book && (
-            <>
-              <h1>{book.title}</h1>
-              <p className="italic text-neutral-500 mb-4">โดย {book.author}</p>
-              <div className="grid grid-cols-1 lg:grid-cols-3">
-                <img
-                  src="https://placehold.co/150x200"
-                  alt={book.title}
-                  className="w-full object-cover aspect-[3/4]"
-                />
-                <div className="col-span-2 px-4 space-y-2 py-4">
-                  <h3>รายละเอียดหนังสือ</h3>
-                  <p className="indent-4">
-                    {/* TODO: เพิ่มรายละเอียดหนังสือ */}
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam, neque.
-                    Necessitatibus nihil quibusdam molestiae, asperiores nesciunt quod aliquid
-                    accusamus iusto sint amet optio laudantium eius, facilis iure ipsa assumenda
-                    alias pariatur! Quis ad ratione amet fugiat, et culpa cupiditate, veritatis
-                    beatae sed voluptatum a reprehenderit id odit quas? Enim, earum?
+        {!!book && (
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <h1 className="text-4xl font-bold text-gray-800 mb-2">{book.title}</h1>
+            <p className="italic text-neutral-500 mb-8 text-lg">โดย {book.author}</p>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <img
+                src="https://placehold.co/150x200"
+                alt={book.title}
+                className="w-full object-cover aspect-[3/4] rounded-lg shadow-md hover:shadow-xl transition-shadow"
+              />
+              
+              <div className="col-span-2 space-y-6">
+                <div>
+                  <h3 className="text-2xl font-semibold text-orange-800 mb-3">รายละเอียดหนังสือ</h3>
+                  <p className="indent-4 text-gray-600 leading-relaxed">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit...
                   </p>
+                </div>
 
-                  <h3>เรื่องย่อ</h3>
-                  <p className="indent-4">
-                    {/* TODO: เพิ่มเรื่องย่อ */}
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia officiis amet nemo
-                    ut placeat aliquam neque id voluptates quod nihil.
+                <div>
+                  <h3 className="text-2xl font-semibold text-orange-800 mb-3">เรื่องย่อ</h3>
+                  <p className="indent-4 text-gray-600 leading-relaxed">
+                    Lorem ipsum dolor sit amet consectetur...
                   </p>
+                </div>
 
-                  <h3>หมวดหมู่</h3>
-                  {/* TODO: เพิ่มหมวดหมู่(s) */}
+                <div>
+                  <h3 className="text-2xl font-semibold text-orange-800 mb-3">หมวดหมู่</h3>
                   <div className="flex flex-wrap gap-2">
-                    <Badge color="teal">#หมวดหมู่ 1</Badge>
-                    <Badge color="teal">#หมวดหมู่ 2</Badge>
-                    <Badge color="teal">#หมวดหมู่ 3</Badge>
-                    <Badge color="teal">#หมวดหมู่ 4</Badge>
+                    <Badge color="orange" size="lg" className="hover:bg-orange-200 cursor-pointer">#หมวดหมู่ 1</Badge>
+                    <Badge color="orange" size="lg" className="hover:bg-orange-200 cursor-pointer">#หมวดหมู่ 2</Badge>
                   </div>
                 </div>
               </div>
+            </div>
 
-              <Divider className="mt-4" />
+            <Divider className="my-8" />
 
-              <Button
-                color="blue"
-                size="xs"
-                component={Link}
-                to={`/books/${book.id}/edit`}
-                className="mt-4"
-                leftSection={<IconEdit />}
-              >
-                แก้ไขข้อมูลหนังสือ
-              </Button>
-            </>
-          )}
-        </Container>
-      </Layout>
-    </>
+            <Button
+              color="blue"
+              size="sm"
+              component={Link}
+              to={`/books/${book.id}/edit`}
+              leftSection={<IconEdit />}
+              className="bg-orange-600 hover:bg-orange-700 transition-colors"
+            >
+              แก้ไขข้อมูลหนังสือ
+            </Button>
+          </div>
+        )}
+      </Container>
+    </Layout>
   );
 }
