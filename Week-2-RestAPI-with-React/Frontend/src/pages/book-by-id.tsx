@@ -4,7 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import { Book } from "../lib/models";
 import useSWR from "swr";
 import Loading from "../components/loading";
-import { IconAlertTriangleFilled, IconEdit } from "@tabler/icons-react";
+import { IconAlertTriangleFilled, IconEdit, IconArrowLeft } from "@tabler/icons-react";
 
 export default function BookByIdPage() {
   const { bookId } = useParams();
@@ -64,16 +64,29 @@ export default function BookByIdPage() {
 
             <Divider className="my-8" />
 
-            <Button
-              color="blue"
-              size="sm"
-              component={Link}
-              to={`/books/${book.id}/edit`}
-              leftSection={<IconEdit />}
-              className="bg-orange-600 hover:bg-orange-700 transition-colors"
-            >
-              แก้ไขข้อมูลหนังสือ
-            </Button>
+            <div className="flex gap-4">
+              <Button
+                variant="light"
+                size="sm"
+                component={Link}
+                to="/books"
+                leftSection={<IconArrowLeft />}
+                className="hover:bg-gray-100 transition-colors"
+              >
+                กลับไปหน้ารายการหนังสือ
+              </Button>
+
+              <Button
+                color="blue"
+                size="sm"
+                component={Link}
+                to={`/books/${book.id}/edit`}
+                leftSection={<IconEdit />}
+                className="bg-orange-600 hover:bg-orange-700 transition-colors"
+              >
+                แก้ไขข้อมูลหนังสือ
+              </Button>
+            </div>
           </div>
         )}
       </Container>
