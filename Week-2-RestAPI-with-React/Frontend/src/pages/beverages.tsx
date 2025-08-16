@@ -147,27 +147,25 @@ export default function BeveragesPage() {
     }
   };
 
+    const [showConfirmation, setShowConfirmation] = useState(false);
+  const [currentOrder, setCurrentOrder] = useState<{
+    beverage: Beverage;
+    options: OrderOptions;
+    quantity: number;
+    totalPrice: number;
+  } | null>(null);
+
   const confirmOrder = () => {
     if (selectedBeverage) {
       const totalPrice = calculatePrice(selectedBeverage, orderOptions) * quantity;
-      const sweetnessText = orderOptions.sweetness !== undefined 
-        ? `ความหวาน ${orderOptions.sweetness}%` 
-        : "";
-      const notesText = orderOptions.notes 
-        ? `\nหมายเหตุ: ${orderOptions.notes}`
-        : "";
-        
-      // TODO: In a real application, we would send this to an API
-      alert(
-        `สั่งซื้อ ${selectedBeverage.name}\n` +
-        `ขนาด: ${getThaiSize(orderOptions.size)}\n` +
-        `ประเภท: ${getThaiType(orderOptions.type)}\n` +
-        `${sweetnessText}` +
-        `${notesText}\n` +
-        `จำนวน ${quantity} แก้ว\n` +
-        `ราคารวม ${totalPrice} บาท`
-      );
+      setCurrentOrder({
+        beverage: selectedBeverage,
+        options: orderOptions,
+        quantity: quantity,
+        totalPrice: totalPrice
+      });
       setOrderModalOpen(false);
+      setShowConfirmation(true);
     }
   };
 
@@ -463,6 +461,93 @@ export default function BeveragesPage() {
               >
                 ยืนยันการสั่งซื้อ
               </Button>
+            </div>
+          )}
+        </Modal>
+
+        {/* Confirmation Modal */}
+        <Modal
+          opened={showConfirmation}
+          onClose={() => setShowConfirmation(false)}
+          size="md"
+          radius="md"
+          padding="xl"
+          centered
+          title={
+            <Text size="xl" fw={600} className="text-orange-800">
+              ✨ สั่งซื้อสำเร็จ
+            </Text>
+          }
+        >
+          {currentOrder && (
+            <div className="space-y-6">
+              {/* Order Header */}
+              <div className="text-center">
+                <Text size="xl" className="mb-2">
+                  {currentOrder.beverage.name}
+                </Text>
+                <Badge size="xl" radius="md" className="bg-green-50 text-green-700 border-green-200">
+                  รอดำเนินการ
+                </Badge>
+              </div>
+
+              {/* Order Details */}
+              <Paper className="bg-orange-50 p-4 space-y-3" radius="md">
+                <div className="flex justify-between">
+                  <Text fw={500}>ขนาด</Text>
+                  <Text>{getThaiSize(currentOrder.options.size)}</Text>
+                </div>
+                <div className="flex justify-between">
+                  <Text fw={500}>ประเภท</Text>
+                  <Text>{getThaiType(currentOrder.options.type)}</Text>
+                </div>
+                {currentOrder.options.sweetness !== undefined && (
+                  <div className="flex justify-between">
+                    <Text fw={500}>ความหวาน</Text>
+                    <Text>{currentOrder.options.sweetness}%</Text>
+                  </div>
+                )}
+                <div className="flex justify-between">
+                  <Text fw={500}>จำนวน</Text>
+                  <Text>{currentOrder.quantity} แก้ว</Text>
+                </div>
+                {currentOrder.options.notes && (
+                  <div className="pt-2 border-t border-orange-200">
+                    <Text fw={500} mb={2}>หมายเหตุ</Text>
+                    <Text size="sm" className="text-gray-600">{currentOrder.options.notes}</Text>
+                  </div>
+                )}
+              </Paper>
+
+              {/* Price Summary */}
+              <Paper p="md" radius="md" className="bg-green-50">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <Text fw={500} size="lg">ราคารวมทั้งสิ้น</Text>
+                    <Text size="sm" className="text-gray-600">
+                      {currentOrder.quantity} แก้ว × {calculatePrice(currentOrder.beverage, currentOrder.options)} บาท
+                    </Text>
+                  </div>
+                  <Text size="xl" fw={700} className="text-green-700">
+                    {currentOrder.totalPrice} บาท
+                  </Text>
+                </div>
+              </Paper>
+
+              <div className="pt-2">
+                <Text size="sm" className="text-gray-500 mb-4 text-center">
+                  กรุณารอสักครู่ พนักงานจะเรียกชื่อเครื่องดื่มของคุณเมื่อเตรียมเสร็จ
+                </Text>
+                <Button
+                  fullWidth
+                  color="green"
+                  size="lg"
+                  onClick={() => setShowConfirmation(false)}
+                  className="bg-green-600 hover:bg-green-700 transition-colors"
+                >
+                  ตกลง
+                </Button>
+              </div>
             </div>
           )}
         </Modal>
