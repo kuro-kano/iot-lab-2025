@@ -1,8 +1,9 @@
 import Layout from "../components/layout";
 import { useState } from "react";
 import { Card, Badge, Button, Group, Text, NumberInput, Modal, Textarea, Paper, Divider } from "@mantine/core";
-import { IconShoppingCart, IconCup } from "@tabler/icons-react";
+import { IconShoppingCart } from "@tabler/icons-react";
 import bgCafe from "../assets/images/bg-cafe-2.jpg";
+import axios from "axios";
 
 interface Beverage {
   id: number;
@@ -155,17 +156,35 @@ export default function BeveragesPage() {
     totalPrice: number;
   } | null>(null);
 
-  const confirmOrder = () => {
+  const confirmOrder = async () => {
     if (selectedBeverage) {
       const totalPrice = calculatePrice(selectedBeverage, orderOptions) * quantity;
-      setCurrentOrder({
-        beverage: selectedBeverage,
-        options: orderOptions,
-        quantity: quantity,
-        totalPrice: totalPrice
-      });
-      setOrderModalOpen(false);
-      setShowConfirmation(true);
+      
+      try {
+        // ส่งข้อมูลไปยัง API
+        await axios.post("/orders", {
+          name: selectedBeverage.name,
+          size: orderOptions.size,
+          type: orderOptions.type,
+          sweetness: orderOptions.sweetness,
+          notes: orderOptions.notes,
+          quantity: quantity,
+          totalPrice: totalPrice,
+        });
+
+        setCurrentOrder({
+          beverage: selectedBeverage,
+          options: orderOptions,
+          quantity: quantity,
+          totalPrice: totalPrice
+        });
+        setOrderModalOpen(false);
+        setShowConfirmation(true);
+      } catch (error) {
+        console.error("Failed to create order:", error);
+        // แสดง error notification
+        alert("เกิดข้อผิดพลาดในการสั่งซื้อ กรุณาลองใหม่อีกครั้ง");
+      }
     }
   };
 

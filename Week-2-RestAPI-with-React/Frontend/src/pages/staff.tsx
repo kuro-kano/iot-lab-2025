@@ -1,7 +1,9 @@
 import Layout from "../components/layout";
-import { useState } from "react";
-import { Badge, Text, Button, Group, Paper, Tabs, Card } from "@mantine/core";
-import { IconClock } from "@tabler/icons-react";
+import { useState, useEffect } from "react";
+import { Badge, Text, Button, Group, Paper, Tabs, Card, Alert } from "@mantine/core";
+import { IconClock, IconAlertCircle } from "@tabler/icons-react";
+import axios from "axios";
+import useSWR from "swr";
 
 interface Order {
   id: number;
@@ -42,9 +44,18 @@ const mockOrders: Order[] = [
   },
 ];
 
+interface OrderResponse {
+  id: number;
+  menu: string;
+  quantity: number;
+  price: number;
+  status: "pending" | "preparing" | "completed" | "cancelled";
+  ordered_at: number;
+}
+
 export default function StaffPage() {
   const [activeTab, setActiveTab] = useState<string>("pending");
-  const [orders, setOrders] = useState<Order[]>(mockOrders);
+  const { data: ordersData, error, mutate } = useSWR<OrderResponse[]>("/orders");
 
   const getStatusColor = (status: Order["status"]) => {
     switch (status) {
@@ -76,11 +87,43 @@ export default function StaffPage() {
     }
   };
 
-  const updateOrderStatus = (orderId: number, newStatus: Order["status"]) => {
-    setOrders(orders.map(order => 
-      order.id === orderId ? { ...order, status: newStatus } : order
-    ));
+  const updateOrderStatus = async (orderId: number, newStatus: OrderResponse["status"]) => {
+    try {
+      await axios.patch(`/orders/${orderId}/status`, { status: newStatus });
+      mutate(); // รีเฟรชข้อมูล
+    } catch (error) {
+      console.error("Failed to update order status:", error);
+      alert("เกิดข้อผิดพลาดในการอัพเดทสถานะ");
+    }
   };
+
+  if (error) {
+    return (
+      <Layout>
+        <div className="container mx-auto px-4 py-8">
+          <Alert icon={<IconAlertCircle size={16} />} title="เกิดข้อผิดพลาด" color="red">
+            ไม่สามารถโหลดข้อมูลได้ กรุณาลองใหม่อีกครั้ง
+          </Alert>
+        </div>
+      </Layout>
+    );
+  }
+
+  const orders = ordersData?.map(order => {
+    const menuData = JSON.parse(order.menu);
+    return {
+      id: order.id,
+      beverageName: menuData.name,
+      size: menuData.size,
+      type: menuData.type,
+      sweetness: menuData.sweetness,
+      notes: menuData.notes,
+      quantity: order.quantity,
+      totalPrice: order.price,
+      status: order.status,
+      timestamp: new Date(order.ordered_at),
+    };
+  }) || [];
 
   const filteredOrders = orders.filter(order => 
     activeTab === "all" ? true : order.status === activeTab
