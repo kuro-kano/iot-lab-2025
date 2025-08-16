@@ -21,6 +21,15 @@ export const books = t.sqliteTable("books", {
   }),
 });
 
+export const staffs = t.sqliteTable("staffs", {
+  staff_id: t.integer().primaryKey({
+    autoIncrement: true,
+  }),
+  firstname: t.text().notNull(),
+  lastname: t.text().notNull(),
+})
+
+
 export const bookRelations = relations(books, ({ one }) => ({
   genre: one(genres, {
     fields: [books.genreId],

@@ -1,6 +1,8 @@
 import Layout from "../components/layout";
 import { useState } from "react";
-import { Card, Badge, Button, Group, Text, NumberInput, Modal } from "@mantine/core";
+import { Card, Badge, Button, Group, Text, NumberInput, Modal, Textarea, Paper, Divider } from "@mantine/core";
+import { IconShoppingCart, IconCup } from "@tabler/icons-react";
+import bgCafe from "../assets/images/bg-cafe-2.jpg";
 
 interface Beverage {
   id: number;
@@ -85,6 +87,7 @@ interface OrderOptions {
   size: "small" | "medium" | "large";
   type: "hot" | "iced" | "frappe";
   sweetness?: number;
+  notes?: string;
 }
 
 export default function BeveragesPage() {
@@ -150,11 +153,17 @@ export default function BeveragesPage() {
       const sweetnessText = orderOptions.sweetness !== undefined 
         ? `ความหวาน ${orderOptions.sweetness}%` 
         : "";
+      const notesText = orderOptions.notes 
+        ? `\nหมายเหตุ: ${orderOptions.notes}`
+        : "";
+        
+      // TODO: In a real application, we would send this to an API
       alert(
         `สั่งซื้อ ${selectedBeverage.name}\n` +
         `ขนาด: ${getThaiSize(orderOptions.size)}\n` +
         `ประเภท: ${getThaiType(orderOptions.type)}\n` +
-        `${sweetnessText}\n` +
+        `${sweetnessText}` +
+        `${notesText}\n` +
         `จำนวน ${quantity} แก้ว\n` +
         `ราคารวม ${totalPrice} บาท`
       );
@@ -164,112 +173,181 @@ export default function BeveragesPage() {
 
   return (
     <Layout>
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-4xl font-bold text-orange-800 mb-8">เครื่องดื่ม</h1>
+      {/* Hero Section */}
+      <section
+        className="relative h-[300px] w-full bg-cover bg-center bg-orange-800 bg-blend-multiply mb-8"
+        style={{
+          backgroundImage: `url(${bgCafe})`,
+        }}
+      >
+        <div className="absolute inset-0 bg-black bg-opacity-40" />
+        <div className="container mx-auto px-4 h-full flex flex-col justify-center items-center relative z-10 text-center">
+          <h1 className="text-5xl font-bold text-white mb-4">เครื่องดื่ม</h1>
+          <p className="text-xl text-orange-100">เลือกเครื่องดื่มที่คุณชื่นชอบ</p>
+        </div>
+      </section>
 
+      <div className="container mx-auto px-4 py-8">
         {/* Category Filter */}
-        <div className="mb-8">
-          <Group>
-            <Button
-              variant={selectedCategory === "all" ? "filled" : "light"}
-              color="orange"
-              onClick={() => setSelectedCategory("all")}
-            >
-              ทั้งหมด
-            </Button>
-            <Button
-              variant={selectedCategory === "coffee" ? "filled" : "light"}
-              color="orange"
-              onClick={() => setSelectedCategory("coffee")}
-            >
-              กาแฟ
-            </Button>
-            <Button
-              variant={selectedCategory === "tea" ? "filled" : "light"}
-              color="orange"
-              onClick={() => setSelectedCategory("tea")}
-            >
-              ชา
-            </Button>
-            <Button
-              variant={selectedCategory === "other" ? "filled" : "light"}
-              color="orange"
-              onClick={() => setSelectedCategory("other")}
-            >
-              อื่นๆ
-            </Button>
-          </Group>
+        <div className="mb-12 flex justify-center">
+          <Paper shadow="sm" radius="xl" className="p-1 bg-orange-50">
+            <Group gap="xs">
+              <Button
+                variant={selectedCategory === "all" ? "filled" : "subtle"}
+                color="orange"
+                onClick={() => setSelectedCategory("all")}
+                radius="xl"
+                size="md"
+                className={selectedCategory === "all" ? "bg-orange-500 hover:bg-orange-600" : ""}
+              >
+                ทั้งหมด
+              </Button>
+              <Button
+                variant={selectedCategory === "coffee" ? "filled" : "subtle"}
+                color="orange"
+                onClick={() => setSelectedCategory("coffee")}
+                radius="xl"
+                size="md"
+                className={selectedCategory === "coffee" ? "bg-orange-500 hover:bg-orange-600" : ""}
+              >
+                กาแฟ
+              </Button>
+              <Button
+                variant={selectedCategory === "tea" ? "filled" : "subtle"}
+                color="orange"
+                onClick={() => setSelectedCategory("tea")}
+                radius="xl"
+                size="md"
+                className={selectedCategory === "tea" ? "bg-orange-500 hover:bg-orange-600" : ""}
+              >
+                ชา
+              </Button>
+              <Button
+                variant={selectedCategory === "other" ? "filled" : "subtle"}
+                color="orange"
+                onClick={() => setSelectedCategory("other")}
+                radius="xl"
+                size="md"
+                className={selectedCategory === "other" ? "bg-orange-500 hover:bg-orange-600" : ""}
+              >
+                อื่นๆ
+              </Button>
+            </Group>
+          </Paper>
         </div>
 
         {/* Beverage Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredBeverages.map((beverage) => (
-            <Card key={beverage.id} shadow="sm" padding="lg" radius="md" withBorder>
+            <Card 
+              key={beverage.id} 
+              shadow="sm" 
+              padding="lg" 
+              radius="lg" 
+              withBorder 
+              className="hover:shadow-lg transition-shadow duration-200 border-orange-100"
+            >
               <Card.Section>
-                <div className="h-48 bg-orange-100 flex items-center justify-center">
+                <div className="h-48 bg-gradient-to-br from-orange-50 to-orange-100 flex items-center justify-center relative overflow-hidden">
                   {beverage.image ? (
                     <img
                       src={beverage.image}
                       alt={beverage.name}
-                      className="h-full w-full object-cover"
+                      className="h-full w-full object-cover hover:scale-105 transition-transform duration-300"
                     />
                   ) : (
-                    <Text size="xl" className="text-orange-300">
+                    <Text size="4xl" className="text-orange-300 transform hover:scale-110 transition-transform duration-300">
                       {beverage.category === "coffee" ? "☕" : beverage.category === "tea" ? "🫖" : "🥤"}
                     </Text>
                   )}
                 </div>
               </Card.Section>
 
-              <Group justify="apart" mt="md" mb="xs">
-                <Text fw={500}>{beverage.name}</Text>
-                <div>
-                  <Badge color="orange" variant="light" className="mr-2">
-                    เริ่มต้น {beverage.basePrice} บาท
+              <div className="p-4">
+                <div className="flex justify-between items-start mb-3">
+                  <Text size="xl" fw={600} className="text-gray-800">
+                    {beverage.name}
+                  </Text>
+                  <Badge 
+                    color="orange" 
+                    variant="light" 
+                    size="lg"
+                    className="bg-orange-50"
+                  >
+                    {beverage.basePrice} ฿
                   </Badge>
                 </div>
-              </Group>
 
-              <Text size="sm" color="dimmed" mb="md">
-                {beverage.description}
-              </Text>
+                <Text size="sm" color="dimmed" className="h-12 mb-4 line-clamp-2">
+                  {beverage.description}
+                </Text>
 
-              <div className="space-y-2 mb-4">
-                {/* Available Types */}
-                <Group gap="xs">
-                  {beverage.availableTypes.map((type) => (
-                    <Badge key={type} color="gray" variant="dot" size="sm">
-                      {type === "hot" ? "ร้อน" : type === "iced" ? "เย็น" : "ปั่น"}
+                <div className="space-y-3 mb-4">
+                  {/* Available Types */}
+                  <div>
+                    <Text size="sm" fw={500} className="mb-2 text-gray-600">
+                      รูปแบบ:
+                    </Text>
+                    <Group gap="xs">
+                      {beverage.availableTypes.map((type) => (
+                        <Badge 
+                          key={type} 
+                          color="orange" 
+                          variant="dot" 
+                          size="sm"
+                          className="bg-orange-50"
+                        >
+                          {type === "hot" ? "ร้อน" : type === "iced" ? "เย็น" : "ปั่น"}
+                        </Badge>
+                      ))}
+                    </Group>
+                  </div>
+
+                  {/* Available Sizes */}
+                  <div>
+                    <Text size="sm" fw={500} className="mb-2 text-gray-600">
+                      ขนาด:
+                    </Text>
+                    <Group gap="xs">
+                      {beverage.availableSizes.map((size) => (
+                        <Badge 
+                          key={size} 
+                          color="orange" 
+                          variant="dot" 
+                          size="sm"
+                          className="bg-orange-50"
+                        >
+                          {size === "small" ? "เล็ก" : size === "medium" ? "กลาง" : "ใหญ่"}
+                        </Badge>
+                      ))}
+                    </Group>
+                  </div>
+
+                  {/* Customization Options */}
+                  {beverage.customizable.sweetness && (
+                    <Badge 
+                      color="yellow" 
+                      variant="light" 
+                      size="sm"
+                      className="bg-yellow-50"
+                    >
+                      ปรับความหวานได้
                     </Badge>
-                  ))}
-                </Group>
+                  )}
+                </div>
 
-                {/* Available Sizes */}
-                <Group gap="xs">
-                  {beverage.availableSizes.map((size) => (
-                    <Badge key={size} color="gray" variant="dot" size="sm">
-                      {size === "small" ? "เล็ก" : size === "medium" ? "กลาง" : "ใหญ่"}
-                    </Badge>
-                  ))}
-                </Group>
-
-                {/* Customization Options */}
-                {beverage.customizable.sweetness && (
-                  <Badge color="yellow" variant="dot" size="sm">
-                    ปรับความหวานได้
-                  </Badge>
-                )}
+                <Button
+                  variant="filled"
+                  color="orange"
+                  fullWidth
+                  radius="xl"
+                  size="md"
+                  onClick={() => handleOrder(beverage)}
+                  className="bg-orange-500 hover:bg-orange-600 transition-colors"
+                >
+                  สั่งซื้อ
+                </Button>
               </div>
-
-              <Button
-                variant="light"
-                color="orange"
-                fullWidth
-                radius="md"
-                onClick={() => handleOrder(beverage)}
-              >
-                สั่งซื้อ
-              </Button>
             </Card>
           ))}
         </div>
@@ -342,17 +420,47 @@ export default function BeveragesPage() {
                   onChange={(val) => setQuantity(typeof val === 'number' ? val : 1)}
                   min={1}
                   max={10}
+                  size="md"
+                  className="mb-4"
+                  rightSection={<Text size="sm">แก้ว</Text>}
                 />
               </div>
 
-              <div className="pt-2">
-                <Text>ราคาต่อแก้ว: {calculatePrice(selectedBeverage, orderOptions)} บาท</Text>
-                <Text fw={500} size="lg" color="orange">
-                  ราคารวม: {calculatePrice(selectedBeverage, orderOptions) * quantity} บาท
-                </Text>
+              {/* Notes */}
+              <div className="mb-4">
+                <Textarea
+                  label="หมายเหตุเพิ่มเติม"
+                  placeholder="เช่น ไม่ใส่วิปครีม, เพิ่มช็อตกาแฟ"
+                  value={orderOptions.notes}
+                  onChange={(e) => setOrderOptions({ ...orderOptions, notes: e.currentTarget.value })}
+                  minRows={2}
+                />
               </div>
 
-              <Button fullWidth color="orange" onClick={confirmOrder} size="lg">
+              <Paper p="md" radius="md" className="bg-orange-50 mb-4">
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <Text size="sm">ราคาต่อแก้ว:</Text>
+                    <Text fw={500}>{calculatePrice(selectedBeverage, orderOptions)} บาท</Text>
+                  </div>
+                  <Divider />
+                  <div className="flex justify-between items-center">
+                    <Text fw={500}>ราคารวม:</Text>
+                    <Text fw={700} size="xl" color="orange">
+                      {calculatePrice(selectedBeverage, orderOptions) * quantity} บาท
+                    </Text>
+                  </div>
+                </div>
+              </Paper>
+
+              <Button 
+                fullWidth 
+                color="orange" 
+                onClick={confirmOrder} 
+                size="lg"
+                leftSection={<IconShoppingCart size={20} />}
+                className="bg-orange-500 hover:bg-orange-600 transition-colors"
+              >
                 ยืนยันการสั่งซื้อ
               </Button>
             </div>
