@@ -1,4 +1,5 @@
 import Layout from "../components/layout";
+import Footer from "../components/footer";
 import { useState } from "react";
 import { Card, Badge, Button, Group, Text, NumberInput, Modal, Textarea, Paper, Divider } from "@mantine/core";
 import { IconShoppingCart } from "@tabler/icons-react";
@@ -672,6 +673,7 @@ export default function BeveragesPage() {
           )}
         </Modal>
       </div>
+      <Footer />
     </Layout>
   );
 }

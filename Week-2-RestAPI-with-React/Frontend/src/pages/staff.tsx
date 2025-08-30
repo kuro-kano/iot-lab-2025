@@ -1,5 +1,5 @@
 import Layout from "../components/layout";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Badge, Text, Button, Group, Paper, Tabs, Card, Alert } from "@mantine/core";
 import { IconClock, IconAlertCircle } from "@tabler/icons-react";
 import axios from "axios";
@@ -17,32 +17,6 @@ interface Order {
   status: "pending" | "preparing" | "completed" | "cancelled";
   timestamp: Date;
 }
-
-// Mock data for demonstration
-const mockOrders: Order[] = [
-  {
-    id: 1,
-    beverageName: "Cappuccino",
-    size: "medium",
-    type: "hot",
-    quantity: 2,
-    totalPrice: 150,
-    status: "pending",
-    notes: "ไม่ใส่วิปครีม",
-    timestamp: new Date(),
-  },
-  {
-    id: 2,
-    beverageName: "Green Tea Latte",
-    size: "large",
-    type: "iced",
-    sweetness: 50,
-    quantity: 1,
-    totalPrice: 85,
-    status: "preparing",
-    timestamp: new Date(),
-  },
-];
 
 interface OrderResponse {
   id: number;

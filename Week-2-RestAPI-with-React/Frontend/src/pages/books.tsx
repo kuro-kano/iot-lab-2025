@@ -1,4 +1,5 @@
 import Layout from "../components/layout";
+import Footer from "../components/footer";
 import cafeBackgroundImage from "../assets/images/bg-cafe-2.jpg";
 import useSWR from "swr";
 import { Book } from "../lib/models";
@@ -80,6 +81,7 @@ export default function BooksPage() {
           ))}
         </div>
       </section>
+      <Footer />
     </Layout>
   );
 }
