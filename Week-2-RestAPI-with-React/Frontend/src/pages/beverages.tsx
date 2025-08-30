@@ -656,9 +656,6 @@ export default function BeveragesPage() {
               </Paper>
 
               <div className="pt-2">
-                <Text size="sm" className="text-gray-500 mb-4 text-center">
-                  กรุณารอสักครู่ พนักงานจะเรียกชื่อเครื่องดื่มของคุณเมื่อเตรียมเสร็จ
-                </Text>
                 <Button
                   fullWidth
                   color="green"
