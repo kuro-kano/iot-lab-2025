@@ -15,16 +15,14 @@ booksRouter.get("/", async (c) => {
 
 booksRouter.get("/:id", async (c) => {
   const id = Number(c.req.param("id"));
-  const result = await drizzle.query.books.findFirst({
-    where: eq(books.id, id),
-    with: {
-      genre: true,
-    },
-  });
-  if (!result) {
+  const result = await drizzle
+    .select()
+    .from(books)
+    .where(eq(books.id, id));
+  if (result.length === 0) {
     return c.json({ error: "Book not found" }, 404);
   }
-  return c.json(result);
+  return c.json(result[0]);
 });
 
 booksRouter.post(
@@ -35,18 +33,16 @@ booksRouter.post(
       title: z.string().min(1),
       author: z.string().min(1),
       publishedAt: z.iso.datetime({ offset: true }).transform((data) => dayjs(data).unix()),
-      genreId: z.number().int().optional().nullable(),
     })
   ),
   async (c) => {
-    const { title, author, publishedAt, genreId } = c.req.valid("json");
+    const { title, author, publishedAt } = c.req.valid("json");
     const result = await drizzle
       .insert(books)
       .values({
         title,
         author,
         publishedAt,
-        genreId: genreId ?? null,
       })
       .returning();
     return c.json({ success: true, book: result[0] }, 201);
@@ -66,7 +62,6 @@ booksRouter.patch(
         })
         .optional()
         .transform((data) => (data ? dayjs(data).unix() : undefined)),
-      genreId: z.number().int().optional().nullable().optional(),
     })
   ),
   async (c) => {
