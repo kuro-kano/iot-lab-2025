@@ -38,6 +38,9 @@ export default function HomePage() {
             และเรียนรู้เรื่องใหม่ๆ ที่เกี่ยวกับเทคโนโลยี IoT โดยคาเฟ่ของเรานั้น ก่อตั้งขึ้นโดย
             ผศ.ดร. ปานวิทย์ ธุวะนุติ ซึ่งเป็นอาจารย์ในวิชา Internet of Things
             โค้ดชุดนี้เป็นโค้ดตัวอย่างในหัวข้อ Hono และ React ในวิชานี้
+          <p className="text-left col-span-2 text-lg leading-relaxed text-gray-700">
+            <br /> จัดทำโดย นายธันยา วรมงคล รหัสนักศึกษา 66070091
+          </p>
           </p>
 
           <div className="shadow-lg rounded-lg overflow-hidden transition-transform hover:scale-105">
