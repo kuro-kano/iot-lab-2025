@@ -39,6 +39,9 @@ export default function HomePage() {
             ผศ.ดร. ปานวิทย์ ธุวะนุติ ซึ่งเป็นอาจารย์ในวิชา Internet of Things
             โค้ดชุดนี้เป็นโค้ดตัวอย่างในหัวข้อ Hono และ React ในวิชานี้
           </p>
+          <p className="text-left col-span-2 text-lg leading-relaxed text-gray-700">
+            <br /> จัดทำโดย นายธันยา วรมงคล รหัสนักศึกษา 66070091
+          </p>
 
           <div className="shadow-lg rounded-lg overflow-hidden transition-transform hover:scale-105">
             <img src={ajPanwitImage} alt="Panwit Tuwanut" className="h-full w-full object-cover" />

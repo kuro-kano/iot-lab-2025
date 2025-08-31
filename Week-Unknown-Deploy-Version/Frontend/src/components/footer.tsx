@@ -7,6 +7,7 @@ export default function Footer() {
         <p className="mb-4">วันเสาร์ - อาทิตย์: 9:00 - 21:00 น.</p>
         <p className="text-orange-200">
           ติดต่อเรา: 02-xxx-xxxx | example@email.com
+          <br /> instagram: @kuro_kano1412 | Facebook: クロナリ モス | twitter: @darkraised_
         </p>
       </div>
     </section>
