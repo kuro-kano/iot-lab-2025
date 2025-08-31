@@ -11,7 +11,8 @@ app.use("/api/*", cors({
   origin: (origin) => {
     const allowed = [
       "http://localhost:5173",
-      "https://your-frontend.vercel.app"
+      "https://cafe-website.vercel.app",
+      "https://cafe-website-kuro-kano.vercel.app"
     ];
     return allowed.includes(origin) ? origin : "*";
   },
