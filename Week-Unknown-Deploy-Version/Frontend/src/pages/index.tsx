@@ -20,9 +20,15 @@ export default function HomePage() {
         <div className="mt-8">
           <Link
             to="/books"
-            className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105"
+            className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105 mr-4"
           >
             ดูรายการหนังสือ
+          </Link>
+          <Link
+            to="/staff"
+            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105"
+          >
+            สำหรับพนักงาน
           </Link>
         </div>
       </section>
